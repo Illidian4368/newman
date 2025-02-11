@@ -27,6 +27,20 @@ jobs:
             - name: Checkout repository
               uses: actions/checkout@v3
 
+            - name: Use Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 16
+                  cache: "npm"
+
+            - name: Install
+              run: npm ci
+
+            - name: Run coverage
+              run: npm run coverage
+            - name: Checkout repository
+              uses: actions/checkout@v3
+
             - name: Use Node.js ${{ matrix.node-version }}
               uses: actions/setup-node@v3
               with:
@@ -47,31 +61,14 @@ jobs:
             - name: Checkout repository
               uses: actions/checkout@v3
 
-            - name: Use Node.js 20
+            - name: Use Node.js
               uses: actions/setup-node@v3
               with:
-                  node-version: 20
+                  node-version: 16
                   cache: "npm"
 
             - name: Install
               run: npm ci
 
-            - name: Run unit tests
-              run: |
-                  npm run test-unit
-                  bash <(curl -s https://codecov.io/bash) -c -Z -f .coverage/coverage-final.json -F unit -t ${{ secrets.CODECOV_TOKEN }}
-
-            - name: Run integration tests
-              run: |
-                  npm run test-integration
-                  bash <(curl -s https://codecov.io/bash) -c -Z -f .coverage/coverage-final.json -F integration -t ${{ secrets.CODECOV_TOKEN }}
-
-            - name: Run CLI tests
-              run: |
-                  npm run test-cli
-                  bash <(curl -s https://codecov.io/bash) -c -Z -f .coverage/coverage-final.json -F cli -t ${{ secrets.CODECOV_TOKEN }}
-
-            - name: Run library tests
-              run: |
-                  npm run test-library
-                  bash <(curl -s https://codecov.io/bash) -c -Z -f .coverage/coverage-final.json -F library -t ${{ secrets.CODECOV_TOKEN }}
+            - name: Run coverage
+              run: npm run coverage
